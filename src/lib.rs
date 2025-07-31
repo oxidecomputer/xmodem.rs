@@ -418,7 +418,7 @@ impl Xmodem {
                     warn!("Cancel (CAN) byte received");
                     cancels += 1;
                 }
-                Some(c) => warn!("Unknown byte received at start of XMODEM transfer: {}", c),
+                Some(c) => warn!("Unknown byte received at start of XMODEM transfer: {c}"),
                 None => warn!("Timed out waiting for start of XMODEM transfer."),
             }
 
@@ -437,7 +437,7 @@ impl Xmodem {
                     self.max_errors
                 );
                 if let Err(err) = dev.write_all(&[CAN]) {
-                    warn!("Error sending CAN byte: {}", err);
+                    warn!("Error sending CAN byte: {err}");
                 }
                 return Err(Error::ExhaustedRetries);
             }
@@ -467,14 +467,14 @@ impl Xmodem {
 
             match get_byte_timeout(dev)? {
                 Some(ACK) => {
-                    debug!("Received ACK for block {}", seqno);
+                    debug!("Received ACK for block {seqno}");
                     continue;
                 }
                 // TODO handle CAN bytes
                 Some(b) => {
-                    warn!("Expected ACK, got {}", b);
+                    warn!("Expected ACK, got {b}");
                 }
-                None => warn!("Timeout waiting for ACK for block {}", seqno),
+                None => warn!("Timeout waiting for ACK for block {seqno}"),
             }
 
             self.errors += 1;
@@ -499,7 +499,7 @@ impl Xmodem {
                     return Ok(());
                 }
                 Some(b) => {
-                    warn!("Expected ACK, got {}", b);
+                    warn!("Expected ACK, got {b}");
                 }
                 None => {
                     warn!("Timeout waiting for ACK for EOT")
